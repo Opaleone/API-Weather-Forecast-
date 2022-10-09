@@ -1,0 +1,9 @@
+Gather User input
+  1. Ask for city location
+  4. Store input in Local Storage for quick reference
+
+Translate User input
+  1. User city into Lat Long
+    a. ?use geolocation to find out lat long from search input.
+  2. Input lat long into requestURL
+
