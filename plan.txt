@@ -7,3 +7,10 @@ Translate User input
     a. ?use geolocation to find out lat long from search input.
   2. Input lat long into requestURL
 
+Get Weather info
+  1. Call and get response from Open Weather API.
+    a. Initiate fetch requestURL
+    b. Translate response into a readable object
+  2. Select relevant information
+    a. 
+
