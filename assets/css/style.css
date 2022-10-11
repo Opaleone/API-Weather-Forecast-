@@ -23,7 +23,7 @@
 }
 
 #info-display {
-  display: flex;
+  display: none;
   flex-direction: column;
   width: 70%;
   margin: 10px;
@@ -79,6 +79,10 @@
 #weather-display {
   border:  1px solid;
   padding: 10px;
+}
+
+#weather-icon {
+  
 }
 
 #forecast {
