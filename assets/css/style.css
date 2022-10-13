@@ -1,11 +1,24 @@
+/* Global Variables */
 :root {
   --gray: #999;
   --lightBlue: #5197e6;
 }
 
+/* All Selectors */
 * {
   font-family: 'Roboto', sans-serif;
 }
+
+/* Classes */
+.forecast-card {
+  background-color: #2e3e4f;
+  color: white;
+  width: 18%;
+  padding-left: 10px;
+  font-size: 30px;
+}
+
+/* ID Selectors */
 
 #page-title {
   background: linear-gradient(to right, #3363bb, #20084a);
@@ -81,23 +94,13 @@
   padding: 10px;
 }
 
-#weather-icon {
-
-}
-
 #target-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.forecast-card {
-  background-color: #2e3e4f;
-  color: white;
-  width: 18%;
-  padding-left: 10px;
-  font-size: 30px;
-}
+/* Pseudo-Selectors */
 
 #search-btn:hover {
   background-color: var(--gray);

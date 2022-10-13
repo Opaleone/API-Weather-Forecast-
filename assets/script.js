@@ -1,3 +1,5 @@
+
+// Global Variables
 var searchBtn = document.querySelector('#search-btn');
 
 let searchBar = document.querySelector('#searchbar');
@@ -17,25 +19,19 @@ var count = 0;
 
 // Local Storage Variable
 
-var historyOfScores = JSON.parse(localStorage.getItem('historyOfScores'));
+var historyOfSearches = JSON.parse(localStorage.getItem('historyOfSearches'));
 
-if (historyOfScores === null) {
-  historyOfScores = [];
+// Initializes variable within local storage is none exists
+if (historyOfSearches === null) {
+  historyOfSearches = [];
 
-  localStorage.setItem('historyOfScores', JSON.stringify(historyOfScores));
+  localStorage.setItem('historyOfSearches', JSON.stringify(historyOfSearches));
 }
 
+// Creates button history from local storage array on refresh
 searchHistoryButtonsOnRefresh();
 
-console.log(historyOfScores);
-
-// id='search-btn-history'
-// var requestUrl = 'https://api.openweathermap.org/data/3.0/onecall?lat=' + lat + '&lon=' + long + '&units=imperial&appid=1ac2e1ab97a3d396986d8b6bd6516f63';
-// var latLong = 'https://api.openweathermap.org/geo/1.0/direct?q=Austin&limit=1&appid=1ac2e1ab97a3d396986d8b6bd6516f63';
-// https://api.openweathermap.org/data/3.0/onecall?lat=30.266666&lon=-97.733330&units=imperial&appid=1ac2e1ab97a3d396986d8b6bd6516f63;
-// http://openweathermap.org/img/wn/10d@2x.png
-
-
+// Global Variable for current weather from API
 var currentWeather = {
   temp: '',
   humidity: '',
@@ -44,6 +40,7 @@ var currentWeather = {
   icon: ''
 };
 
+// Global Variable for 5 day forcast from API
 var dailyWeather = {
   temps: [],
   humidities: [],
@@ -53,14 +50,15 @@ var dailyWeather = {
 };
 
 
+// Function that creates a button for each index of the array in local storage
 function searchHistoryButtonsOnRefresh() {
-  for (let i = 0; i < historyOfScores.length; i++) {
+  for (let i = 0; i < historyOfSearches.length; i++) {
     var historyBtn = document.createElement('button');
 
     historyBtn.setAttribute('id', 'search-btn-history')
-    historyBtn.setAttribute('value', historyOfScores[i]);
+    historyBtn.setAttribute('value', historyOfSearches[i]);
 
-    historyBtn.textContent = historyOfScores[i];
+    historyBtn.textContent = historyOfSearches[i];
 
     searchHistory.appendChild(historyBtn);
 
@@ -68,6 +66,7 @@ function searchHistoryButtonsOnRefresh() {
   
 }
 
+// Function to add a button to search history
 function searchHistoryButtonsCreation(cityName) {
 
   var historyBtn = document.createElement('button');
@@ -81,20 +80,9 @@ function searchHistoryButtonsCreation(cityName) {
   
 }
 
-
+// This function makes a call to the GeoLocator API within OpenWeathers list of API's to get Latitude, longitude from a city name
+// It requires an input from the search bar to be passed in as a parameter.
 function getLatLong(searchInput) {
-
-  // let forecastSection = document.querySelector('#forecast');
-
-  // let h1El = document.createElement('h1');
-
-  // h1El.setAtrribute('id', 'loading');
-
-  // h1El.textContent = 'Loading...'
-
-  // forecastSection.appendChild(h1El);
-
-
   fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + searchInput + '&limit=1&appid=1ac2e1ab97a3d396986d8b6bd6516f63')
   .then (function(response) {
     return response.json();
@@ -109,6 +97,7 @@ function getLatLong(searchInput) {
   })
 }
 
+// This function takes the latitude and longitude in as parameters from the getLatLon
 function getWeather(lat, long) {
   fetch ('https://api.openweathermap.org/data/3.0/onecall?lat=' + lat + '&lon=' + long + '&units=imperial&appid=1ac2e1ab97a3d396986d8b6bd6516f63')
     .then (function (response) {
@@ -117,6 +106,7 @@ function getWeather(lat, long) {
     .then (function (data) {
       console.log(data);
 
+      // Reinitializes the weather variables to be filled with new search values
       currentWeather = {
         temp: '',
         humidity: '',
@@ -132,14 +122,15 @@ function getWeather(lat, long) {
         unixMeasures: [],
         icons: []
       };
-      // if ()
-
+      
+      // Next five lines push current weather from response.json object to currentWeather object for later recall
       currentWeather.temp = data.current.temp;
       currentWeather.humidity = data.current.humidity;
       currentWeather.windSpeed = data.current.wind_speed;
       currentWeather.unixMeasure = new Date(data.current.dt * 1000).toLocaleDateString('en-US');
       currentWeather.icon = data.current.weather[0].icon;
 
+      // Does the same as prior 5 lines but for each index of the dailyWeather object
       for (let i = 0; i < 6; i++) {
         dailyWeather.temps.push(data.daily[i].temp.day);
         dailyWeather.humidities.push(data.daily[i].humidity);
@@ -148,14 +139,18 @@ function getWeather(lat, long) {
         dailyWeather.icons.push(data.daily[i].weather[0].icon);
       }
 
+      console.log(dailyWeather);
+      
+      // Runs display functions to display weather variables on the page
       displayCurrentWeather();
       displayDailyForecast();
 
+      // Displays the weather section on the page
       document.querySelector('#info-display').style.display = 'flex';
     })
 }
 
-
+// This displays the current weather in the current weather section on the page
 function displayCurrentWeather() {
   currentCity.textContent = `${cityName} (${currentWeather.unixMeasure})`
   currentIcon.src = `http://openweathermap.org/img/wn/${currentWeather.icon}@2x.png`
@@ -164,6 +159,7 @@ function displayCurrentWeather() {
   currentHumidity.textContent = `Humidity: ${currentWeather.humidity}%`
 }
 
+// This function displays the 5 day forecast cards on the page
 function displayDailyForecast() {
 
   let targetEl = document.createElement('div');
@@ -215,19 +211,23 @@ searchBtn.addEventListener('click', function () {
 
   let searchInput = document.querySelector('#searchbar').value;
 
+  // Keeps count of how many times the user has searched and removes card section if user has searched more than once.
+  // Clears card section in preparation for updated weather
   if (count > 0) {
     document.querySelector('#target-container').remove()
   }
 
+  // Stores city name that was searched by user for use later
   cityName = searchInput;
 
-  searchHistoryButtons();
-
+  // Checks to see if search history button has already been created 
+  //If not, creates one and displays it
   if (historyBtn.includes(cityName)) {
+    // Begins requests of API
     getLatLong(searchInput);
   } else {
-    historyOfScores.push(cityName);
-    localStorage.setItem('historyOfScores', JSON.stringify(historyOfScores));
+    historyOfSearches.push(cityName);
+    localStorage.setItem('historyOfScores', JSON.stringify(historyOfSearches));
 
     searchHistoryButtonsCreation(cityName);
 
@@ -238,10 +238,13 @@ searchBtn.addEventListener('click', function () {
 
 // Event listener for Enter key on Search Bar
 searchBar.addEventListener('keyup', function (event) {
+  
+  // Only runs the function if the key up is the Enter key
   if (event.key !== 'Enter') {
     return;
   }
-
+  
+  // Sets the weather display to hide while weather updates
   document.querySelector('#info-display').style.display = 'none';
 
   if (count > 0) {
@@ -252,11 +255,11 @@ searchBar.addEventListener('keyup', function (event) {
 
   cityName = searchInput;
 
-  if (historyOfScores.includes(cityName)) {
+  if (historyOfSearches.includes(cityName)) {
     getLatLong(searchInput);
   } else {
-    historyOfScores.push(cityName);
-    localStorage.setItem('historyOfScores', JSON.stringify(historyOfScores));
+    historyOfSearches.push(cityName);
+    localStorage.setItem('historyOfSearches', JSON.stringify(historyOfSearches));
 
     searchHistoryButtonsCreation(cityName);
 
@@ -267,6 +270,7 @@ searchBar.addEventListener('keyup', function (event) {
 
 // Event listener for click on Search History buttons
 let searchBtns = document.querySelectorAll('#search-btn-history');
+// Adds an event listener to each search button
 for (let i = 0; i < searchBtns.length; i++) {
   searchBtns[i].addEventListener('click', function () {
 
@@ -279,11 +283,11 @@ for (let i = 0; i < searchBtns.length; i++) {
     cityName = searchBtns[i].value;
   
 
-    if (historyOfScores.includes(cityName)) {
+    if (historyOfSearches.includes(cityName)) {
       getLatLong(cityName);
     } else {
-      historyOfScores.push(cityName);
-      localStorage.setItem('historyOfScores', JSON.stringify(historyOfScores));
+      historyOfSearches.push(cityName);
+      localStorage.setItem('historyOfSearches', JSON.stringify(historyOfSearches));
 
       getLatLong(cityName);
     }

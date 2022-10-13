@@ -8,14 +8,17 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <title>Weather Finder | Find the weather for you city</title>
 
+  <!-- Links for Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
     <h1 id="page-title">Weather Dashboard</h1>
   </header>
+
+  <!-- Search Sidebar -->
   <main id="main-flex">
     <section id="city-search" class="card">
       <section id="top-card">
@@ -24,10 +27,12 @@
         <button id="search-btn"><span>Search</span></button>
       </section>
 
+      <!-- Section for search history buttons to append to -->
       <section id="city-history">
       </section>
     </section>
 
+    <!-- Current weather display -->
     <section id="info-display">
       <section id="weather-display">
         <h2 id="city-title"></h2> <img id="weather-icon" src="" />
@@ -40,6 +45,7 @@
         <h3>5-Day Forecast:</h3>
       </div>
 
+      <!-- Section to append 5 day forecast cards -->
       <section id="forecast"></section>
     </section>
 
