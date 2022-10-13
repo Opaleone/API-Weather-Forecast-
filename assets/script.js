@@ -173,9 +173,9 @@ function displayDailyForecast() {
     let divEl = document.createElement('div');
     let h4El = document.createElement('h4');
     let imgEl = document.createElement('img');
-    let pEl1 = document.createElement('p')
-    let pEl2 = document.createElement('p')
-    let pEl3 = document.createElement('p')
+    let pEl1 = document.createElement('p');
+    let pEl2 = document.createElement('p');
+    let pEl3 = document.createElement('p');
 
     targetEl.setAttribute('id', 'target-container');
 
