@@ -222,7 +222,7 @@ searchBtn.addEventListener('click', function () {
 
   // Checks to see if search history button has already been created 
   //If not, creates one and displays it
-  if (historyBtn.includes(cityName)) {
+  if (historyOfSearches.includes(cityName)) {
     // Begins requests of API
     getLatLong(searchInput);
   } else {
